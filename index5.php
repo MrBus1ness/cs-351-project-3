@@ -11,8 +11,8 @@ if (!is_logged_in()) {
 
 $host = 'localhost'; 
 $dbname = 'books'; 
-$user = 'mark'; 
-$pass = 'mark';
+$user = 'hunter'; 
+$pass = 'hunter';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
