@@ -154,7 +154,7 @@ $stmt = $pdo->query($sql);
 
     <!-- Form section with container -->
     <div class="form-container">
-        <h2>Add Student GRade</h2>
+        <h2>Add Student Grade</h2>
         <form action="index1.php" method="post">
             <label for="student_id">Student ID:</label>
             <input type="text" id="student_id" name="student_id" required>
