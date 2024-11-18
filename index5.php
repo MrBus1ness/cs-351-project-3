@@ -160,7 +160,8 @@ $stmt = $pdo->query($sql);
                         <form action="index5.php" method="post" style="display:inline;">
                             <input type="hidden" name="update_id" value="<?php echo $row['student_id']; ?>">
                             <label for="new_grade">New Grade:</label>
-                            <input type="text" id="new_grade" name="new_grade" required>
+                            <input type="text" id="new_grade" name="new_grade">
+                            <input type="submit" value="Update Grade">
                     </td>
                 </tr>
                 <?php endwhile; ?>
@@ -170,7 +171,7 @@ $stmt = $pdo->query($sql);
 
     <!-- Form section with container -->
     <div class="form-container">
-        <h2>Add Student Grade</h2>
+        <h2>Add Student</h2>
         <form action="index5.php" method="post">
             <label for="student_id">Student ID:</label>
             <input type="text" id="student_id" name="student_id" required>
