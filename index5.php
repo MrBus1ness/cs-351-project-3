@@ -56,8 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $delete_sql = 'DELETE FROM grades WHERE student_id = :student_id';
         $stmt_delete = $pdo->prepare($delete_sql);
         $stmt_delete->execute(['student_id' => $delete_id]);
-    } elseif (isset($_POST['update_grade'])) {
+    } elseif (isset($_POST['update_id']) && isset($_POST['new_grade'])) {
         // Update the grade field
+        $update_id = (int) $_POST['update_id'];
+        $new_grade = htmlspecialchars($_POST['new_grade'])
+
 
     }
 
@@ -153,8 +156,9 @@ $stmt = $pdo->query($sql);
                     </td>
                     <td>
                         <form action="index5.php" method="post" style="display:inline;">
-                            <input type="number" name="update_grade" value="<?php echo $row['student_id']; ?>">
-                            <!-- <input type=" -->
+                            <input type="hidden" name="update_id" value="<?php echo $row['student_id']; ?>">
+                            <label for="new_grade">New Grade:</label>
+                            <input type="text" id="new_grade" name="new_grade" required>
                     </td>
                 </tr>
                 <?php endwhile; ?>
