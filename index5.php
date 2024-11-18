@@ -108,7 +108,7 @@ $stmt = $pdo->query($sql);
                                     <td>
                                         <form action="index1.php" method="post" style="display:inline;">
                                             <input type="hidden" name="delete_id" value="<?php echo $row['student_id']; ?>">
-                                            <input type="submit" value="Drop from course">
+                                            <input type="submit" value="Drop">
                                         </form>
                                     </td>
                                 </tr>
@@ -132,6 +132,7 @@ $stmt = $pdo->query($sql);
                     <th>Student ID</th>
                     <th>Student Name</th>
                     <th>Class Grade</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -143,8 +144,12 @@ $stmt = $pdo->query($sql);
                     <td>
                         <form action="index5.php" method="post" style="display:inline;">
                             <input type="hidden" name="delete_id" value="<?php echo $row['student_id']; ?>">
-                            <input type="submit" value="Delete">
+                            <input type="submit" value="Drop">
                         </form>
+                    </td>
+                    <td>
+                        <form action="index5.php" method="post" style="display:inline;">
+
                     </td>
                 </tr>
                 <?php endwhile; ?>
