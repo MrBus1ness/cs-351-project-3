@@ -59,9 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (isset($_POST['update_id']) && isset($_POST['new_grade'])) {
         // Update the grade field
         $update_id = (int) $_POST['update_id'];
-        $new_grade = htmlspecialchars($_POST['new_grade'])
+        $new_grade = htmlspecialchars($_POST['new_grade']);
 
-
+        $update_sql = 'UPDATE grades SET class_grade = :new_grade WHERE student_id = :student_id';
+        $stmt_update = $pdo->prepare($update_sql);
+        $stmt_update->execute(['student_id' => $update_id, 'new_grade' => $new_grade]);
     }
 
 }
