@@ -28,7 +28,7 @@ try {
     throw new PDOException($e->getMessage(), (int)$e->getCode());
 }
 
-// Handle book search
+// Handle student search
 $search_results = null;
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $search_term = '%' . $_GET['search'] . '%';
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Get all books for main table
+// Get all students for main table
 $sql = 'SELECT student_id, student_name, class_grade FROM grades';
 $stmt = $pdo->query($sql);
 ?>
