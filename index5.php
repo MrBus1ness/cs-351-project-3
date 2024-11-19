@@ -120,7 +120,15 @@ $stmt = $pdo->query($sql);
                                             <input type="submit" value="Drop">
                                         </form>
                                     </td>
-                                </tr>
+                                    <td>
+                                        <form action="index5.php" method="post" style="display:inline;">
+                                            <input type="hidden" id="update_id" name="update_id" value="<?php echo htmlspecialchars($row['student_id']); ?>">
+                                            <label for="new_grade">New Grade:</label>
+                                            <input type="text" id="new_grade" name="new_grade">
+                                            <input type="submit" value="Update Grade">
+                                        </form>
+                                    </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
