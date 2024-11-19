@@ -10,7 +10,7 @@ if (!is_logged_in()) {
 }
 
 $host = 'localhost'; 
-$dbname = 'test'; 
+$dbname = 'proj3'; 
 $user = 'hunter'; 
 $pass = 'hunter';
 $charset = 'utf8mb4';
@@ -32,7 +32,7 @@ try {
 $search_results = null;
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $search_term = '%' . $_GET['search'] . '%';
-    $search_sql = 'SELECT student_id, student_name, class_grade FROM grades WHERE student_id LIKE :search';
+    $search_sql = 'SELECT student_id, student_name, gpa, highschool FROM graduates WHERE student_id LIKE :search';
     $search_stmt = $pdo->prepare($search_sql);
     $search_stmt->execute(['search' => $search_term]);
     $search_results = $search_stmt->fetchAll();
@@ -40,36 +40,37 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['student_id']) && isset($_POST['student_name']) && isset($_POST['class_grade'])) {
+    if (isset($_POST['student_id']) && isset($_POST['student_name']) && isset($_POST['gpa']) && isset($_POST['highschool'])) {
         // Insert new entry
         $student_id = htmlspecialchars($_POST['student_id']);
         $student_name = htmlspecialchars($_POST['student_name']);
-        $class_grade = htmlspecialchars($_POST['class_grade']);
+        $gpa = htmlspecialchars($_POST['gpa']);
+        $highschool = htmlspecialchars($_POST['highschool']);
         
-        $insert_sql = 'INSERT INTO grades (student_id, student_name, class_grade) VALUES (:student_id, :student_name, :class_grade)';
+        $insert_sql = 'INSERT INTO graduates (student_id, student_name, gpa, highschool) VALUES (:student_id, :student_name, :gpa, :highschool)';
         $stmt_insert = $pdo->prepare($insert_sql);
-        $stmt_insert->execute(['student_id' => $student_id, 'student_name' => $student_name, 'class_grade' => $class_grade]);
+        $stmt_insert->execute(['student_id' => $student_id, 'student_name' => $student_name, 'gpa' => $gpa, 'highschool' => $highschool]);
     } elseif (isset($_POST['delete_id'])) {
         // Delete an entry
         $delete_id = (int) $_POST['delete_id'];
         
-        $delete_sql = 'DELETE FROM grades WHERE student_id = :student_id';
+        $delete_sql = 'DELETE FROM graduates WHERE student_id = :student_id';
         $stmt_delete = $pdo->prepare($delete_sql);
         $stmt_delete->execute(['student_id' => $delete_id]);
-    } elseif (isset($_POST['update_id']) && isset($_POST['new_grade'])) {
-        // Update the grade field
+    } elseif (isset($_POST['update_id']) && isset($_POST['new_gpa'])) {
+        // Update the gpa field
         $update_id = (int) $_POST['update_id'];
-        $new_grade = htmlspecialchars($_POST['new_grade']);
+        $new_gpa = htmlspecialchars($_POST['new_gpa']);
 
-        $update_sql = 'UPDATE grades SET class_grade = :new_grade WHERE student_id = :student_id';
+        $update_sql = 'UPDATE graduates SET gpa = :new_gpa WHERE student_id = :student_id';
         $stmt_update = $pdo->prepare($update_sql);
-        $stmt_update->execute(['student_id' => $update_id, 'new_grade' => $new_grade]);
+        $stmt_update->execute(['student_id' => $update_id, 'new_gpa' => $new_gpa]);
     }
 
 }
 
 // Get all students for main table
-$sql = 'SELECT student_id, student_name, class_grade FROM grades';
+$sql = 'SELECT student_id, student_name, gpa, highschool FROM graduates';
 $stmt = $pdo->query($sql);
 ?>
 
@@ -77,13 +78,14 @@ $stmt = $pdo->query($sql);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Blackboard Student Management System</title>
+    <title>College Offers</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Hero Section -->
     <div class="hero-section">
-        <h1 class="hero-title">Blackboard Student Management System</h1>
+        <h1 class="hero-title">College Offer Distribution System</h1>
+        <h3 class="hero-subtitle">Send High School Graduates Offers To Our College</h3>
         
         
         <!-- Search moved to hero section -->
@@ -104,7 +106,8 @@ $stmt = $pdo->query($sql);
                                 <tr>
                                     <th>Student ID</th>
                                     <th>Name</th>
-                                    <th>Grade</th>
+                                    <th>GPA</th>
+                                    <th>Highschool</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -113,19 +116,20 @@ $stmt = $pdo->query($sql);
                                 <tr>
                                     <td><?php echo htmlspecialchars($row['student_id']); ?></td>
                                     <td><?php echo htmlspecialchars($row['student_name']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['class_grade']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['gpa']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['highschool']); ?></td>
                                     <td>
                                         <form action="index1.php" method="post" style="display:inline;">
                                             <input type="hidden" name="delete_id" value="<?php echo $row['student_id']; ?>">
-                                            <input type="submit" value="Drop">
+                                            <input type="submit" value="Deny!">
                                         </form>
                                     </td>
                                     <td>
                                         <form action="index5.php" method="post" style="display:inline;">
                                             <input type="hidden" id="update_id" name="update_id" value="<?php echo htmlspecialchars($row['student_id']); ?>">
-                                            <label for="new_grade">New Grade:</label>
-                                            <input type="text" id="new_grade" name="new_grade">
-                                            <input type="submit" value="Update Grade">
+                                            <label for="new_gpa">New GPA:</label>
+                                            <input type="text" id="new_gpa" name="new_gpa">
+                                            <input type="submit" value="Update GPA">
                                         </form>
                                     </td>
                                     </tr>
@@ -148,7 +152,8 @@ $stmt = $pdo->query($sql);
                 <tr>
                     <th>Student ID</th>
                     <th>Student Name</th>
-                    <th>Class Grade</th>
+                    <th>GPA</th>
+                    <th>Highschool</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -157,19 +162,20 @@ $stmt = $pdo->query($sql);
                 <tr>
                     <td><?php echo htmlspecialchars($row['student_id']); ?></td>
                     <td><?php echo htmlspecialchars($row['student_name']); ?></td>
-                    <td><?php echo htmlspecialchars($row['class_grade']); ?></td>
+                    <td><?php echo htmlspecialchars($row['gpa']); ?></td>
+                    <td><?php echo htmlspecialchars($row['highschool']); ?></td>
                     <td>
                         <form action="index5.php" method="post" style="display:inline;">
                             <input type="hidden" name="delete_id" value="<?php echo $row['student_id']; ?>">
-                            <input type="submit" value="Drop">
+                            <input type="submit" value="Deny!">
                         </form>
                     </td>
                     <td>
                         <form action="index5.php" method="post" style="display:inline;">
                             <input type="hidden" id="update_id" name="update_id" value="<?php echo htmlspecialchars($row['student_id']); ?>">
-                            <label for="new_grade">New Grade:</label>
-                            <input type="text" id="new_grade" name="new_grade">
-                            <input type="submit" value="Update Grade">
+                            <label for="new_gpa">New GPA:</label>
+                            <input type="text" id="new_gpa" name="new_gpa">
+                            <input type="submit" value="Update GPA">
                         </form>
                     </td>
                 </tr>
@@ -188,8 +194,11 @@ $stmt = $pdo->query($sql);
             <label for="student_name">Student Name:</label>
             <input type="text" id="student_name" name="student_name" required>
             <br><br>
-            <label for="class_grade">Class Grade:</label>
-            <input type="text" id="class_grade" name="class_grade" required>
+            <label for="gpa">GPA:</label>
+            <input type="text" id="gpa" name="gpa" required>
+            <br><br>
+            <label for="highschool">Highschool:</label>
+            <input type="text" id="highschool" name="highschool" required>
             <br><br>
             <input type="submit" value="Add Entry">
         </form>
