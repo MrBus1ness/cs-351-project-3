@@ -85,7 +85,7 @@ $stmt = $pdo->query($sql);
     <!-- Hero Section -->
     <div class="hero-section">
         <h1 class="hero-title">College Offer Distribution System</h1>
-        <h3 class="hero-subtitle">Send High School Graduates Offers To Our College</h3>
+        <h3 class="hero-subtitle">Deny High School Graduates Offers To Our College</h3>
         
         
         <!-- Search moved to hero section -->
