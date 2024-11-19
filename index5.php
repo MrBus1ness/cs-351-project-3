@@ -9,6 +9,11 @@ if (!is_logged_in()) {
     exit;
 }
 
+// DISCLAIMER
+// Something is wrong with my auth or config files, launching index5 in ampps does 
+// not take you to the login page for some reason. But if you just start ampps at login.php
+// everything works fine.
+
 $host = 'localhost'; 
 $dbname = 'proj3'; 
 $user = 'hunter'; 
